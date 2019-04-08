@@ -5,7 +5,7 @@ from datetime import datetime as dt
 
 import requests
 from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
-
+from random import randint
 
 # To be used data for testing
 votedFor = {
@@ -18,8 +18,11 @@ votedFor = {
 votedUsers = []
 userVote = []
 
+p = 11
+g = 2
+
 users = ['f20171499', 'f20171602', 'f20171501']
-passwords = ['ringa', 'chandi', 'shilbi']
+passwords = ['ringa1', 'chandi2', 'shilbi3']
 
 
 ####  Creating the Block Class  ####
@@ -35,7 +38,7 @@ class Block:
 
     def hashBlock(self):
         hashed = SHA.new()
-        data = str(self.time) + sself.voterstr(self.votes) + str(self.prevHash) + str(self.nonce)
+        data = str(self.index) + str(self.time) + str(self.voter) + str(self.votes) + str(self.prevHash) + str(self.nonce)
         hashed.update(data.encode('utf-8'))
         return hashed
 
@@ -49,17 +52,21 @@ class Blockchain:
 
     ## Create genesis block ##
     def genesisBlock(self):
-        self.createBlock(0, dt.now(), "None", "0000", "0", 0)
+        time = dt.now()
+        self.createBlock(0, time, "None", "0000", "0", 0)
 
     ## Create new block ##
-    def createBlock(index, time, voter, votes, prevHash, nonce):
-        block = Block(index, time, voter, vote, prevHash, nonce)
+    def createBlock(self, index, time, voter, votes, prevHash, nonce):
+        block = Block(index, time, voter, votes, prevHash, nonce)
         self.blockchain.append(block)
 
     def verifyTransaction():
-        pass
+        for r in range(0,p):
+            h = pow(g, r)%p
+            b = randint(0,1)
+            s = (r + b*)
 
-    def nonceCalcFunc(block):
+    def nonceCalcFunc(self, block):
         prev = block
         nonce = 0
         
@@ -85,7 +92,8 @@ class Blockchain:
 app = Flask(__name__)
 
 blockchain = Blockchain(2)
-
+blockchain.genesisBlock()
+print(blockchain)
 
 # Route for Login Page
 @app.route('/')
@@ -118,8 +126,9 @@ def login():
 @app.route('/calculateVote', methods=['POST'])
 def calVote():
     if request.method == 'POST':
-        votedUsers.append(request.form['currUser'])
-        userVote.append(request.form['Amethi'] + request.form['Patna'])
+        # votedUsers.append(request.form['currUser'])
+        # userVote.append(request.form['Amethi'] + request.form['Patna'])
+
         # userVote.append(request.form['Patna'])
         print(votedUsers)
         print("\n")
