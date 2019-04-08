@@ -39,8 +39,8 @@ class Block:
     def __init__(self, index, time, voter, votes, prevHash, nonce):
         self.index = index
         self.time = time
-        self.votes = votes
         self.voter = voter
+        self.votes = votes
         self.prevHash = prevHash
         self.nonce = nonce
         self.currHash = self.hashBlock()
@@ -52,6 +52,7 @@ class Block:
         return hashed
 
 
+
 ####  Creating the Blockchain Class  ####
 class Blockchain:
     def __init__(self, diff):
@@ -61,39 +62,35 @@ class Blockchain:
 
     ## Create genesis block ##
     def genesisBlock(self):
-        block = Block(self.index, dt.now(), "None", "0000", "0", 0)
-        return block
+        self.createBlock(self.index, dt.now(), "None", "0000", "0", 0)
 
     ## Create new block ##
-    def createBlock(user, vote, prevHash, nonce):
-        self.index += 1
-        block = Block(self.index, dt.now(), user, vote, prevHash, nonce)
-        return block
+    def createBlock(index, time, voter, votes, prevHash, nonce):
+        block = Block(index, time, voter, vote, prevHash, nonce)
+        self.blockchain.append(block)
 
     def verifyTransaction():
         pass
 
-    # def nonceFunc(nonce, block):
-    #     testHash = SHA.new()
-    #     testHash.update((str(block.time) + str(self.voter) + str(block.votes) + str(self.prevHash) + str(nonce)).encode('utf-8')))
-    #     return testHash[:self.diff] == '0'*self.diff 
-
-
-    ## Calculate NONCE using proof of work ##
-    def mineBlock(block):
+    def nonceCalcFunc(block):
+        prev = block
         nonce = 0
+        
         testHash = SHA.new()
-        while True:
-            # data = 
-            testHash.update((str(block.time) + str(self.voter) + str(block.votes) + str(self.prevHash) + str(nonce)).encode('utf-8'))
-            if (testHash.hexdigest()[:self.diff] == '0'*self.diff):
-                break
-            else:
-                nonce += 1
+        testHash.update((str(nonce) + str(prev.index) + str(prev.time) + str(prev.voter) + str(prev.votes) + str(prev.prevHash) + str(prev.nonce)).encode('utf-8'))
+        
+        while (testHash.hexdigest()[:self.diff] == '0'*self.diff):
+            nonce += 1
+            testHash.update((str(nonce) + str(prev.index) + str(prev.time) + str(prev.voter) + str(prev.votes) + str(prev.prevHash) + str(prev.nonce)).encode('utf-8'))
+
         return nonce
 
+    ## Calculate NONCE using proof of work ##
+    def mineBlock(voter, votes):
+        prevBlock = blockchain[-1]
+        nonce = self.nonceCalcFunc(prevBlock)
+        self.createBlock((prevBlock.index + 1), dt.now(), voter, votes, prevBlock.currUser, nonce)
 
-    ## View respective user's Vote ##
     def viewUser():
         pass
 
@@ -150,15 +147,15 @@ def registration():
     return render_template('registration.html')
 
 
-# @app.route('/viewUser', methods=['POST'])
-# def viewUser():
-#     if request.method == 'GET':
-#         # candidate = users.append(request.form['username'])
-#         candidate = username
-#         print(candidate)
-#         candidateVote = userVote[votedUsers.index(candidate)]
-#         return render_template('viewUser.html', val = candidateVote)
-#     return render_template('viewUser.html')
+@app.route('/viewUser', methods=['POST'])
+def viewUser():
+    if request.method == 'GET':
+        # candidate = users.append(request.form['username'])
+        candidate = username
+        print(candidate)
+        candidateVote = userVote[votedUsers.index(candidate)]
+        return render_template('viewUser.html', val = candidateVote)
+    return render_template('viewUser.html')
 
 
 if __name__ == '__main__':
