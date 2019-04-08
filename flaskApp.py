@@ -46,11 +46,10 @@ class Blockchain:
     def __init__(self, diff):
         self.blockchain = []
         self.diff = diff
-        self.index = 0
 
     ## Create genesis block ##
     def genesisBlock(self):
-        self.createBlock(self.index, dt.now(), "None", "0000", "0", 0)
+        self.createBlock(0, dt.now(), "None", "0000", "0", 0)
 
     ## Create new block ##
     def createBlock(index, time, voter, votes, prevHash, nonce):
@@ -84,6 +83,10 @@ class Blockchain:
 
 
 app = Flask(__name__)
+
+blockchain = Blockchain(2)
+
+
 # Route for Login Page
 @app.route('/')
 @app.route('/home')
@@ -135,14 +138,15 @@ def registration():
     return render_template('registration.html')
 
 
-@app.route('/viewUser', methods=['POST'])
+@app.route('/viewUser', methods=['GET','POST'])
 def viewUser():
-    if request.method == 'GET':
-        # candidate = users.append(request.form['username'])
-        candidate = username
+    if request.method == 'POST':
+        candidate = request.form['username']
+        index = votedUsers.index(candidate)
+        candidateVote = votedFor[userVote[index]]
         print(candidate)
-        candidateVote = userVote[votedUsers.index(candidate)]
-        return render_template('viewUser.html', val = candidateVote)
+        print(candidateVote)
+        return render_template('login.html', val = candidateVote)
     return render_template('viewUser.html')
 
 

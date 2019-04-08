@@ -1,50 +1,30 @@
-from collections import OrderedDict
+##########################################
+# 
+# 
+# 
+#    FILE PURELY USED FOR TESTING 
+#
+#
+#
+#
+#
+##########################################
 
-import binascii
 
-import Crypto
-import Crypto.Random
 from Crypto.Hash import SHA
-from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_v1_5
+user = 'f20171499'
 
-import hashlib
-import json
-from time import time
-from urllib.parse import urlparse
-from uuid import uuid4
+t = SHA.new()
+t.update(user.encode('utf-8'))
 
-import requests
-from flask import Flask, jsonify, request, render_template
+a = t.hexdigest()
 
-class Block:
-    def __init__():
-        self.timestamp = timestamp
-        self.vote = vote
-        self.previous_hash = previous_hash
-        self.hash = current_hash
-        self.nonce = nonce
-    
-    def createBlock():
-        pass
-    
-    def hashBlock():
-        pass
+s = int(a, 16)
 
-    
+sum = 0
 
-class Blockchain:
-    def __init__():
-        pass
+while s>0:
+    temp = s%10
+    sum = sum + temp
 
-    def createBlock():
-        pass
-
-    def verifyTransaction():
-        pass
-
-    def mineBlock():
-        pass
-
-    def viewUser():
-        pass
+print(sum)
