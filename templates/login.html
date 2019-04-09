@@ -72,7 +72,7 @@
   </div>
   <h1 style= "text-align:center;">Crypto Assignment 2019</h1>
     
-  <form class="modal-content animate" method="POST" action="http://127.0.0.1:5000/login">
+  <form class="modal-content animate" method="POST" action="/login">
     <div class="container">
       <label for="uname"><b>Username</b></label>
       <input type="text" placeholder="Enter Username" name="username" value="{{ request.form.username }}" required>
@@ -88,10 +88,10 @@
     </div>
   </form>
 
-  <form class="modal-content animate" method="GET" action="http://127.0.0.1:5000/viewUser">
+  <form class="modal-content animate" method="POST" action="/viewUser">
     <div class="container">
             <label for="uname"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="username" value="{{ request.form.username }}" required>
+            <input type="text" placeholder="Enter Username" name="username">
         
             <button type="submit">Get</button>
     </div>

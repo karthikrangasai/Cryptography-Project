@@ -1,0 +1,99 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+          font-family: Arial, Helvetica, sans-serif;
+        }
+        input[type=text], input[type=password] {
+            margin: 8px auto;
+            width: 50%;
+            padding: 12px 20px;
+            /* margin: 8px 0; */
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        label {
+            margin: 8px auto;
+            width: 50%;
+        }
+        button {
+            margin: 8px auto;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            /* margin: 8px 0; */
+            border: none;
+            cursor: pointer;
+            width: 50%;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        a {
+            margin: 8px auto;
+            background-color: #AB66AB;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            cursor: pointer;
+            width: 25%;
+            text-decoration: none;
+            text-align: center;
+        }
+        .container {
+            margin: auto;
+            width: 50%;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+        span {
+            margin: auto;
+            margin: 8px auto;
+            width: 50%;
+        }
+        span.psw {
+          float: right;
+          padding-top: 16px;
+        }
+      </style>
+</head>
+<body>
+    <form class="modal-content animate" method="POST" action="/verifyTransaction">
+        <div class="container">
+            <h3 style="margin: auto" name={{value}}>Welcome : {{value}}</h3>
+            <input type="hidden" name="currUser" value={{value}} />
+            <br>
+            {%for i in range(0, len)%} 
+                <label><b>r = {{r[i]}} and b = {{b[i]}}</b></label> 
+            {%endfor%}
+
+            <h3 style="text-align: center">Enter the value of (r + b*x) in the given boxes respectively.</h3>
+
+            <label for="uname"><b>1</b></label>
+            <input type="number" placeholder="Enter the value" name="one">
+
+            <label for="psw"><b>2</b></label>
+            <input type="number" placeholder="Enter the value" name="two">
+            
+            <label for="uname"><b>3</b></label>
+            <input type="number" placeholder="Enter the value" name="three">
+
+            <label for="psw"><b>4</b></label>
+            <input type="number" placeholder="Enter the value" name="four">
+            
+            <label for="uname"><b>5</b></label>
+            <input type="number" placeholder="Enter the value" name="five">
+            
+            
+            
+            <button type="submit">Submit</button>
+        </div>
+      </form>
+</body>
+</html>
