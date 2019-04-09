@@ -35,10 +35,14 @@ b = [randint(0,1) for i in range(5)]    # LIST OF 5 INTEGRS EITHER 0 OR 1
 ##################
 ## USER DETAILS ##
 ##################
-users = ['f20171499', 'f20171602', 'f20171501']
-passwords = ['ringa', 'chandi', 'shilbi']
-keys = [1,1,1]
-y = [ (pow(g, val)%p) for val in keys]
+# users = ['f20171499', 'f20171602', 'f20171501']
+# passwords = ['ringa', 'chandi', 'shilbi']
+users = []
+passwords = []
+# keys = [1,1,1]
+keys = []
+# y = [ (pow(g, val)%p) for val in keys]
+y = []
 
 ####################################
 ####  Creating the Block Class  ####
@@ -226,10 +230,10 @@ def registration():
         passwords.append(request.form['password'])
         keys.append(int(request.form['key']))
         y.append((pow(g, int(request.form['key']))%p))
-        # print(users)
-        # print(passwords)
+        print(users)
+        print(passwords)
         # print("\n")
-        # print(keys)
+        print(keys)
         # return render_template(url_for('home'))
     return render_template('registration.html')
 
