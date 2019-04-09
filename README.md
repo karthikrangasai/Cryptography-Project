@@ -15,8 +15,6 @@ An implementation of Blockchain that demonstrates a voting system and uses Zero 
 
 # Files
 ```bash
-.
-├── blockchain.py
 ├── flaskApp.py
 ├── __pycache__
 │   └── blockchain.cpython-35.pyc
