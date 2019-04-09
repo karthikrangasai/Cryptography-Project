@@ -5,7 +5,7 @@ from datetime import datetime as dt
 
 import requests
 from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
-from random import randint
+from random import randint, sample
 
 # To be used data for testing
 votedFor = {
@@ -14,15 +14,22 @@ votedFor = {
     '0110' : "Amethi : Rahul and Patna : Obama",
     '0101' : "Amethi : Rahul and Patna : Trump",
 }
-
 votedUsers = []
 userVote = []
 
+
+# Values for the ZKP
 p = 11
 g = 2
+r = sample(range(0,11), 5)
+b = [randint(0,1) for i in range(5)]
 
+
+# User details
 users = ['f20171499', 'f20171602', 'f20171501']
-passwords = ['ringa1', 'chandi2', 'shilbi3']
+passwords = ['ringa', 'chandi', 'shilbi']
+keys = [1,2,3]
+y = [ (pow(g, val)%p) for val in keys]
 
 
 ####  Creating the Block Class  ####
@@ -49,6 +56,8 @@ class Blockchain:
     def __init__(self, diff):
         self.blockchain = []
         self.diff = diff
+        self.verify = []
+        self.verifyIndex = 0
 
     ## Create genesis block ##
     def genesisBlock(self):
@@ -60,11 +69,20 @@ class Blockchain:
         block = Block(index, time, voter, votes, prevHash, nonce)
         self.blockchain.append(block)
 
-    def verifyTransaction():
-        for r in range(0,p):
-            h = pow(g, r)%p
-            b = randint(0,1)
-            s = (r + b*)
+    def verifyTransaction(self):
+        ret = []
+        for i in range(5):
+            h = pow(g, r[i])%p
+            s = self.verify[i]
+            ret.append((pow(g, s)%p) == (h * (pow(y[self.verifyIndex], b[i])%p)))
+        
+        print("In Verify Transaction\n")
+        print(ret.count(True))
+
+        if ret.count(True) >= 3:
+            return True
+        else:
+            return False
 
     def nonceCalcFunc(self, block):
         prev = block
@@ -115,20 +133,39 @@ def login():
         currentUser = request.form['username']
         currentUserPass = request.form['password']
         if currentUser in users and currentUserPass in passwords and users.index(currentUser) == passwords.index(currentUserPass):
-            return render_template('voting.html', value=currentUser)
+            return render_template('verify.html', value=currentUser, len = len(r), r = r, b = b)
         else:
             error = 'Invalid Credentials. Please try again.'
             # flash('Invalid Credentials. Please try again.')
             return render_template('login.html', error=error)
             # return render_template('login.html')
 
+#Verify User
+@app.route('/verifyTransaction', methods=['GET', 'POST'])
+def verifyTransaction():
+    if request.method == 'POST':
+        blockchain.verify.append(int(request.form['one']))
+        blockchain.verify.append(int(request.form['two']))
+        blockchain.verify.append(int(request.form['three']))
+        blockchain.verify.append(int(request.form['four']))
+        blockchain.verify.append(int(request.form['five']))
+        blockchain.verifyIndex = users.index(request.form['currUser'])
+        print(blockchain.verifyIndex)
+        if blockchain.verifyTransaction():
+            currentUser = request.form['currUser']
+            return render_template('voting.html', value=currentUser)
+        else:
+            error = 'Invalid User.'
+            return render_template('login.html', error=error)
+    return render_template('verify.html')
+
+
 # Take Votes
 @app.route('/calculateVote', methods=['POST'])
 def calVote():
     if request.method == 'POST':
-        # votedUsers.append(request.form['currUser'])
-        # userVote.append(request.form['Amethi'] + request.form['Patna'])
-
+        votedUsers.append(request.form['currUser'])
+        userVote.append(request.form['Amethi'] + request.form['Patna'])
         # userVote.append(request.form['Patna'])
         print(votedUsers)
         print("\n")
@@ -141,8 +178,12 @@ def registration():
     if request.method == 'POST':
         users.append(request.form['username'])
         passwords.append(request.form['password'])
+        keys.append(int(request.form['key']))
+        y.append((pow(g, int(request.form['key']))%p))
         print(users)
         print(passwords)
+        print("\n")
+        print(keys)
         # return render_template(url_for('home'))
     return render_template('registration.html')
 
@@ -160,6 +201,6 @@ def viewUser():
 
 
 if __name__ == '__main__':
-    # app.debug = True
+    app.debug = True
     app.run(host='127.0.0.1', port=5000)
     # app.run(host='0.0.0.0', port=5000)

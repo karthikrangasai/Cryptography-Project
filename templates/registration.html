@@ -69,12 +69,13 @@
   <form class="modal-content animate" method="POST" action="">
     <div class="container">
       <label for="uname"><b>Enter a Username</b></label>
-      <input type="text" placeholder="Enter Username" name="username" value="{{
-        request.form.username }}" required>
+      <input type="text" placeholder="Enter Username" name="username">
 
       <label for="psw"><b>Enter a Password</b></label>
-      <input type="password" placeholder="Enter Password" name="password" value="{{
-        request.form.password }}" required>
+      <input type="password" placeholder="Enter Password" name="password">
+
+      <label for="psw"><b>Enter a Key</b></label>
+      <input type="number" placeholder="Enter Password" name="key">
         
       <button type="submit">Register</button>
 
