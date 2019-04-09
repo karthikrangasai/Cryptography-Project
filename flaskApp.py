@@ -35,8 +35,8 @@ b = [randint(0,1) for i in range(5)]    # LIST OF 5 INTEGRS EITHER 0 OR 1
 ##################
 ## USER DETAILS ##
 ##################
-# users = ['f20171499', 'f20171602', 'f20171501']
-# passwords = ['ringa', 'chandi', 'shilbi']
+# users = ['1', 'f20171602', 'f20171501']
+# passwords = ['1', 'chandi', 'shilbi']
 users = []
 passwords = []
 # keys = [1,1,1]
@@ -136,15 +136,15 @@ app = Flask(__name__)
 
 blockchain = Blockchain(2)
 blockchain.genesisBlock()
-print("#####################")
-print(blockchain.blockchain[0].index)
-print(blockchain.blockchain[0].time)
-print(blockchain.blockchain[0].voter)
-print(blockchain.blockchain[0].votes)
-print(blockchain.blockchain[0].prevHash)
-print(blockchain.blockchain[0].nonce)
-print(blockchain.blockchain[0].currHash.hexdigest())
-print("#####################")
+# print("#####################")
+# print(blockchain.blockchain[0].index)
+# print(blockchain.blockchain[0].time)
+# print(blockchain.blockchain[0].voter)
+# print(blockchain.blockchain[0].votes)
+# print(blockchain.blockchain[0].prevHash)
+# print(blockchain.blockchain[0].nonce)
+# print(blockchain.blockchain[0].currHash.hexdigest())
+# print("#####################")
 
 
 ############################
@@ -221,19 +221,20 @@ def calVote():
     return render_template('login.html')
 
 ########################################################
-## ROUTE TO /registration THAT RESGISTERS NEW VOTERS ##
+## ROUTE TO /registration THAT REGISTERS NEW VOTERS ##
 ########################################################
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
     if request.method == 'POST':
-        users.append(request.form['username'])
-        passwords.append(request.form['password'])
-        keys.append(int(request.form['key']))
-        y.append((pow(g, int(request.form['key']))%p))
-        print(users)
-        print(passwords)
+        if request.form['username'] and request.form['password'] and request.form['key']:
+            users.append(request.form['username'])
+            passwords.append(request.form['password'])
+            keys.append(int(request.form['key']))
+            y.append((pow(g, int(request.form['key']))%p))
+        # print(users)
+        # print(passwords)
         # print("\n")
-        print(keys)
+        # print(keys)
         # return render_template(url_for('home'))
     return render_template('registration.html')
 
@@ -246,15 +247,18 @@ def viewUser():
         candidate = request.form['username']
         for block in blockchain.blockchain:
             if block.voter == candidate:
-                print("#####################")
-                print(block.index)
-                print(block.time)
-                print(block.voter)
-                print(block.votes)
-                print(block.prevHash.hexdigest())
-                print(block.nonce)
-                print(block.currHash.hexdigest())
-                print("#####################")
+                # print("#####################")
+                # print(block.index)
+                # print(block.time)
+                # print(block.voter)
+                # print(block.votes)
+                # print(block.prevHash)
+                # print(block.prevHash.hexdigest())
+                # print(block.nonce)
+                # print(block.currHash)
+                # print(block.currHash.hexdigest())
+                # print("#####################")
+                # print(blockchain.blockchain)
                 candidateVote = votedFor[block.votes]
                 return render_template('login.html', val = candidateVote)
         # index = votedUsers.index(candidate)
